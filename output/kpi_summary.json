@@ -1,0 +1,32 @@
+{
+  "funnel_overall": [
+    {
+      "stage": "Registrations",
+      "count": 292785,
+      "conversion_from_prev": NaN
+    },
+    {
+      "stage": "First_Deposit",
+      "count": 127261,
+      "conversion_from_prev": 0.4346568300971702
+    },
+    {
+      "stage": "First_Bet",
+      "count": 159166,
+      "conversion_from_prev": 0.9874431286882864
+    },
+    {
+      "stage": "Active_30d",
+      "count": 156061,
+      "conversion_from_prev": 0.9034844125001572
+    }
+  ],
+  "gap_stats": {
+    "mean": 0.33529642489641687,
+    "median": 0.08390908564814815,
+    "p75": 0.12877798032407406,
+    "max": 728.1200347222223
+  },
+  "top10_deposit_share": 0.6966331116542741,
+  "first_deposit_vs_active_corr": -0.007222700125277526
+}
