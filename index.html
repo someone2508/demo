@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Interface - Modern Chat Application</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Highlight.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar for conversation threads -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    AI Chat
+                </h1>
+                <button class="btn-icon" id="toggleSidebar" title="Toggle Sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <button class="btn-new-chat" id="newChatBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                New Conversation
+            </button>
+
+            <div class="conversations-list" id="conversationsList">
+                <!-- Conversations will be dynamically added here -->
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn-settings" id="settingsBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m8.66-11.66l-5.2 3M8.54 14.66l-5.2 3M23 12h-6m-6 0H5m16.66 4.66l-5.2-3M8.54 9.34l-5.2-3"></path>
+                    </svg>
+                    Settings
+                </button>
+                <button class="btn-clear" id="clearAllBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Clear All
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main chat area -->
+        <main class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <h2 id="chatTitle">New Conversation</h2>
+                    <span class="chat-subtitle" id="chatSubtitle">Start a conversation</span>
+                </div>
+                <div class="chat-actions">
+                    <button class="btn-icon" id="exportBtn" title="Export Chat">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                    <button class="btn-icon" id="deleteConversationBtn" title="Delete Conversation">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <h2>Welcome to AI Chat</h2>
+                    <p>Start a conversation by typing a message below</p>
+                    <div class="example-prompts">
+                        <h3>Try asking:</h3>
+                        <button class="example-prompt" data-prompt="Explain quantum computing in simple terms">
+                            Explain quantum computing in simple terms
+                        </button>
+                        <button class="example-prompt" data-prompt="Write a Python function to reverse a string">
+                            Write a Python function to reverse a string
+                        </button>
+                        <button class="example-prompt" data-prompt="What are the best practices for web accessibility?">
+                            What are the best practices for web accessibility?
+                        </button>
+                        <button class="example-prompt" data-prompt="Help me debug this JavaScript code">
+                            Help me debug this JavaScript code
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Type your message here... (Shift + Enter for new line)"
+                        rows="1"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="btn-icon" id="attachBtn" title="Attach File (Coming Soon)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                            </svg>
+                        </button>
+                        <button class="btn-send" id="sendBtn" disabled>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-footer">
+                    <span class="char-count" id="charCount">0 / 4000</span>
+                    <span class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        Ready
+                    </span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="btn-close" id="closeSettingsBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="apiKeyInput">OpenAI API Key</label>
+                    <input type="password" id="apiKeyInput" placeholder="sk-...">
+                    <small>Your API key is stored locally and never sent anywhere except OpenAI</small>
+                </div>
+                <div class="setting-group">
+                    <label for="modelSelect">Model</label>
+                    <select id="modelSelect">
+                        <option value="gpt-4">GPT-4</option>
+                        <option value="gpt-4-turbo-preview">GPT-4 Turbo</option>
+                        <option value="gpt-3.5-turbo" selected>GPT-3.5 Turbo</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="temperatureSlider">Temperature: <span id="temperatureValue">0.7</span></label>
+                    <input type="range" id="temperatureSlider" min="0" max="2" step="0.1" value="0.7">
+                    <small>Higher values make output more random, lower values more focused</small>
+                </div>
+                <div class="setting-group">
+                    <label for="maxTokensInput">Max Tokens</label>
+                    <input type="number" id="maxTokensInput" min="100" max="4000" value="2000">
+                    <small>Maximum length of the response</small>
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="streamingCheckbox" checked>
+                        Enable Streaming Responses
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="soundCheckbox" checked>
+                        Enable Sound Effects
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label for="themeSelect">Theme</label>
+                    <select id="themeSelect">
+                        <option value="dark" selected>Dark</option>
+                        <option value="light">Light</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="resetSettingsBtn">Reset to Default</button>
+                <button class="btn-primary" id="saveSettingsBtn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
